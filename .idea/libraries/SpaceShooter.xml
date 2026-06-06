@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="SpaceShooter">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/SpaceShooter.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
