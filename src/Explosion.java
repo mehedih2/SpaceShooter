@@ -1,9 +1,7 @@
 import java.awt.*;
 import java.util.Random;
 
-/**
- * Simple particle explosion effect shown on enemy/player death.
- */
+
 public class Explosion extends GameObject {
 
     private static final Random RNG = new Random();

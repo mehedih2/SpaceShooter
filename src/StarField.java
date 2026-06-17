@@ -1,9 +1,7 @@
 import java.awt.*;
 import java.util.Random;
 
-/**
- * Scrolling star field background.
- */
+
 public class StarField {
 
     private static final Random RNG = new Random();
@@ -40,7 +38,7 @@ public class StarField {
         for (int i = 0; i < COUNT; i++) {
             int b = (int)(brightness[i] * 255);
             g.setColor(new Color(b, b, b));
-            int size = speed[i]; // faster = bigger
+            int size = speed[i]; 
             g.fillOval(sx[i], sy[i], size, size);
         }
     }

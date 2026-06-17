@@ -6,17 +6,14 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
-/**
- * Main game panel — handles the game loop, rendering, input, and collision.
- * Demonstrates OOP: Composition, Encapsulation, Polymorphism (draw/update via GameObject)
- */
+
 public class GamePanel extends JPanel implements Runnable, KeyListener {
 
     public  static final int WIDTH  = 600;
     public  static final int HEIGHT = 750;
     private static final int FPS    = 60;
 
-    // Game state enum — demonstrates OOP: Encapsulation of state
+  
     private enum State { MENU, PLAYING, GAME_OVER }
 
     private State state = State.MENU;
@@ -33,7 +30,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
     private int  enemySpawnInterval = 90; // frames
     private Random rng = new Random();
 
-    // ── Constructor ─────────────────────────────────────────────────────────
+    
     public GamePanel() {
         setPreferredSize(new Dimension(WIDTH, HEIGHT));
         setBackground(Color.BLACK);
@@ -53,7 +50,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
         enemySpawnInterval = 90;
     }
 
-    // ── Game Loop ────────────────────────────────────────────────────────────
+    
     public void startGame() {
         gameThread = new Thread(this);
         gameThread.start();
@@ -78,7 +75,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
         }
     }
 
-    // ── Update ───────────────────────────────────────────────────────────────
+    
     private void update() {
         stars.update();
 
@@ -86,12 +83,12 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 
         player.update();
 
-        // Spawn enemies
+    
         enemySpawnTimer++;
         if (enemySpawnTimer >= enemySpawnInterval) {
             enemies.add(new Enemy(rng.nextInt(WIDTH - 40), -40));
             enemySpawnTimer = 0;
-            // Speed up over time
+      
             if (enemySpawnInterval > 30) enemySpawnInterval--;
         }
 
@@ -101,10 +98,9 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 
         checkCollisions();
 
-        // Remove dead enemies
         enemies.removeIf(e -> !e.isAlive());
 
-        // Enemy reaches bottom → lose a life
+     
         Iterator<Enemy> it = enemies.iterator();
         while (it.hasNext()) {
             Enemy e = it.next();
@@ -115,14 +111,14 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
         }
     }
 
-    // ── Collision Detection ──────────────────────────────────────────────────
+
     private void checkCollisions() {
         List<Bullet> playerBullets = player.getBullets();
 
         for (Enemy enemy : enemies) {
             if (!enemy.isAlive()) continue;
 
-            // Player bullets → enemy
+         
             Iterator<Bullet> bit = playerBullets.iterator();
             while (bit.hasNext()) {
                 Bullet b = bit.next();
@@ -139,7 +135,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
             }
             playerBullets.removeIf(b -> !b.isAlive());
 
-            // Enemy bullets → player
+       
             for (Bullet eb : enemy.getBullets()) {
                 if (eb.isAlive() && eb.getBounds().intersects(player.getBounds())) {
                     eb.destroy();
@@ -151,7 +147,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
                 }
             }
 
-            // Enemy collides with player directly
+  
             if (enemy.getBounds().intersects(player.getBounds())) {
                 enemy.destroy();
                 explosions.add(new Explosion(
@@ -168,14 +164,14 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
         if (lives <= 0) state = State.GAME_OVER;
     }
 
-    // ── Rendering ────────────────────────────────────────────────────────────
+  
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-        // Background
+    
         g2.setColor(new Color(5, 5, 20));
         g2.fillRect(0, 0, WIDTH, HEIGHT);
         stars.draw(g);
@@ -198,25 +194,24 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
     }
 
     private void drawHUD(Graphics2D g) {
-        // Score
+  
         g.setFont(new Font("Courier New", Font.BOLD, 18));
         g.setColor(new Color(0, 220, 255));
         g.drawString("SCORE: " + score, 15, 30);
 
-        // Lives as small ship icons
+ 
         g.drawString("LIVES: ", WIDTH - 160, 30);
         for (int i = 0; i < lives; i++) {
             int lx = WIDTH - 80 + i * 25;
             int[] bx = { lx + 8, lx + 16, lx + 13, lx + 3, lx };
             int[] by = { lx - lx + 10, lx - lx + 16, lx - lx + 26, lx - lx + 26, lx - lx + 16 };
-            // simple triangle icon
             g.setColor(new Color(70, 200, 255));
             g.fillPolygon(new int[]{lx+8, lx+16, lx}, new int[]{12, 26, 26}, 3);
         }
     }
 
     private void drawMenu(Graphics2D g) {
-        // Title
+       
         g.setFont(new Font("Courier New", Font.BOLD, 46));
         drawGlowText(g, "SPACE SHOOTER", WIDTH / 2, 220, new Color(0, 200, 255));
 
@@ -225,7 +220,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
         g.drawString("Arrow Keys / WASD  →  Move", WIDTH / 2 - 130, 310);
         g.drawString("SPACE  →  Shoot", WIDTH / 2 - 130, 338);
 
-        // Blinking start prompt
+       
         if ((System.currentTimeMillis() / 500) % 2 == 0) {
             g.setFont(new Font("Courier New", Font.BOLD, 22));
             g.setColor(new Color(0, 255, 180));
@@ -234,7 +229,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
     }
 
     private void drawGameOver(Graphics2D g) {
-        // Dark overlay
+       
         g.setColor(new Color(0, 0, 0, 170));
         g.fillRect(0, 0, WIDTH, HEIGHT);
 
@@ -255,7 +250,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
     private void drawGlowText(Graphics2D g, String text, int cx, int cy, Color color) {
         FontMetrics fm = g.getFontMetrics();
         int tx = cx - fm.stringWidth(text) / 2;
-        // Glow layers
+       
         for (int r = 8; r >= 0; r -= 2) {
             float alpha = 0.04f + (8 - r) * 0.01f;
             g.setColor(new Color(color.getRed()/255f, color.getGreen()/255f, color.getBlue()/255f, alpha));
@@ -266,7 +261,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
         g.drawString(text, tx, cy);
     }
 
-    // ── Input ─────────────────────────────────────────────────────────────────
+   
     @Override
     public void keyPressed(KeyEvent e) {
         int k = e.getKeyCode();

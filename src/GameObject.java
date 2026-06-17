@@ -1,10 +1,7 @@
 import java.awt.Graphics;
 import java.awt.Rectangle;
 
-/**
- * Abstract base class for all game objects.
- * Demonstrates OOP: Abstraction, Encapsulation
- */
+
 public abstract class GameObject {
     protected int x, y;
     protected int width, height;

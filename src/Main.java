@@ -1,8 +1,6 @@
 import javax.swing.*;
 
-/**
- * Main class — entry point for the Space Shooter game.
- */
+
 public class Main {
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
@@ -13,7 +11,7 @@ public class Main {
             GamePanel panel = new GamePanel();
             frame.add(panel);
             frame.pack();
-            frame.setLocationRelativeTo(null); // center on screen
+            frame.setLocationRelativeTo(null); 
             frame.setVisible(true);
 
             panel.startGame();
